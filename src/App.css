@@ -1,0 +1,12 @@
+.maingrid {
+  display: grid;
+  grid: auto-flow / 1fr;
+  row-gap: 2rem;
+  justify-items: center;
+}
+
+.rowFlex {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
