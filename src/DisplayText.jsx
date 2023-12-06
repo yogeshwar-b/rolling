@@ -9,18 +9,27 @@ import { useEffect, useState } from "react";
  */
 export function DisplayText(props) {
   useEffect(() => {
-    console.log("something happened");
-    console.log(
-      "source is-" +
-        props.textvalue.source +
-        " Destination is-" +
-        props.textvalue.destination
-    );
+    // console.log("something happened");
+    // console.log(
+    //   "source is-" +
+    //     props.textvalue.source +
+    //     " Destination is-" +
+    //     props.textvalue.destination
+    // );
   });
   var lettercomponent = props.textvalue.destination
     .split("")
     .map((letter, index) => (
-      <div key={letter.toString() + index}>{letter}</div>
+      <div key={letter.toString() + index}>
+        {index < props.textvalue.source.length ? (
+          <Letterdiv
+            sourceletter={props.textvalue.source[index]}
+            destletter={letter}
+          ></Letterdiv>
+        ) : (
+          <Letterdiv sourceletter=" " destletter={letter}></Letterdiv>
+        )}
+      </div>
     ));
 
   return <div style={{ display: "inline-flex" }}>{lettercomponent}</div>;
@@ -30,17 +39,41 @@ DisplayText.propTypes = {
   textvalue: PropTypes.object,
 };
 
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
+
+/**
+ * @todo Need to add delay to letter flipping
+ * @param {*} props
+ * @returns
+ */
 function Letterdiv(props) {
-  const [letterstate, setLetter] = setLetter(props.source);
+  const [letterstate, setLetter] = useState(props.sourceletter);
   useEffect(() => {
-    console.log(props.source.charCodeAt(0));
-  });
-  return <div></div>;
+    console.log(
+      "change " +
+        props.sourceletter +
+        " to " +
+        props.destletter +
+        " at " +
+        letterstate
+    );
+    timeout(100);
+    if (letterstate != props.destletter) {
+      if (letterstate.charCodeAt(0) < props.destletter.charCodeAt(0)) {
+        setLetter(String.fromCharCode(letterstate.charCodeAt(0) + 1));
+      } else {
+        setLetter(String.fromCharCode(letterstate.charCodeAt(0) - 1));
+      }
+    }
+  }, [letterstate, setLetter, props.destletter]);
+  return <div>{letterstate}</div>;
 }
 
 Letterdiv.propTypes = {
-  source: PropTypes.string,
-  dest: PropTypes.string,
+  sourceletter: PropTypes.string,
+  destletter: PropTypes.string,
 };
 /**
  *
@@ -51,7 +84,6 @@ Letterdiv.propTypes = {
  */
 export function CustomButton(props) {
   function handleClick() {
-    // DisplayText.logggg();
     props.setText({
       source: props.originalsource.destination,
       destination: props.destText,
