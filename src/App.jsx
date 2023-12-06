@@ -1,27 +1,58 @@
 import { useState } from "react";
 import "./App.css";
 import { createContext } from "react";
-import { DisplayText } from "./DisplayText";
+import { DisplayText, CustomButton } from "./DisplayText";
 export const ThemeContext = createContext();
 import PropTypes from "prop-types";
 
 export function App() {
   const [apptheme, setAppTheme] = useState("dark");
-  const textvalue = "test";
+
+  const [displayText, setDisplayText] = useState({
+    source: "Test",
+    destination: "Test",
+  });
   return (
     <ThemeContext.Provider value={{ apptheme, setAppTheme }}>
       <div className="maingrid">
         <div className="rowFlex">
-          <Textbox label="Source" textvalue={textvalue}></Textbox>
-          <CustomButton label="ROLL"></CustomButton>
+          <Pageitems
+            originalsource={displayText}
+            setDisplayText={setDisplayText}
+          ></Pageitems>
         </div>
         <div>
-          <DisplayText textvalue={textvalue}></DisplayText>
+          <DisplayText textvalue={displayText}></DisplayText>
         </div>
       </div>
     </ThemeContext.Provider>
   );
 }
+
+function Pageitems(props) {
+  const [sourceText, setSourceText] = useState(
+    props.originalsource.destination
+  );
+  return (
+    <>
+      <Textbox
+        label="Source"
+        textvalue={sourceText}
+        setText={setSourceText}
+      ></Textbox>
+      <CustomButton
+        label="ROLL"
+        originalsource={props.originalsource}
+        destText={sourceText}
+        setText={props.setDisplayText}
+      ></CustomButton>
+    </>
+  );
+}
+Pageitems.propTypes = {
+  setDisplayText: PropTypes.func,
+  originalsource: PropTypes.object,
+};
 
 /**
  * Textbox input component
@@ -30,33 +61,26 @@ export function App() {
  *
  */
 function Textbox(props) {
+  const handleChange = (event) => {
+    props.setText(event.target.value);
+  };
+
   return (
     <>
       <label htmlFor="txtbox">{props.label}</label>
-      <input type="text" id="txtbox" value={props.textvalue} />
+      <input
+        type="text"
+        id="txtbox"
+        value={props.textvalue}
+        onChange={handleChange}
+      />
     </>
   );
 }
 
 Textbox.propTypes = {
   label: PropTypes.string.isRequired,
-  textvalue: PropTypes.string.isRequired,
-};
-
-/**
- *
- * @param {{
- * label:  {PropTypes.string}
- * }} props
- * @returns
- */
-function CustomButton(props) {
-  return (
-    <>
-      <button type="button">{props.label}</button>
-    </>
-  );
-}
-CustomButton.propTypes = {
-  label: PropTypes.string.isRequired,
+  textvalue: PropTypes.string,
+  // defaultvalue: PropTypes.string,
+  setText: PropTypes.func,
 };
