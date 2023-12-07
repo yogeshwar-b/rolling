@@ -32,43 +32,40 @@ export function DisplayText(props) {
       </div>
     ));
 
-  return <div style={{ display: "inline-flex" }}>{lettercomponent}</div>;
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap" }}>{lettercomponent}</div>
+  );
 }
 
 DisplayText.propTypes = {
   textvalue: PropTypes.object,
 };
 
-function timeout(delay) {
-  return new Promise((res) => setTimeout(res, delay));
-}
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /**
- * @todo Need to add delay to letter flipping
+ * @todo cleanup the code
+ * @todo add jsdoc type info
+ * @todo parameterize the animation time.
  * @param {*} props
  * @returns
  */
 function Letterdiv(props) {
   const [letterstate, setLetter] = useState(props.sourceletter);
   useEffect(() => {
-    console.log(
-      "change " +
-        props.sourceletter +
-        " to " +
-        props.destletter +
-        " at " +
-        letterstate
-    );
-    timeout(100);
-    if (letterstate != props.destletter) {
-      if (letterstate.charCodeAt(0) < props.destletter.charCodeAt(0)) {
-        setLetter(String.fromCharCode(letterstate.charCodeAt(0) + 1));
-      } else {
-        setLetter(String.fromCharCode(letterstate.charCodeAt(0) - 1));
+    async function changeletter() {
+      await delay(50);
+      if (letterstate != props.destletter) {
+        if (letterstate.charCodeAt(0) < props.destletter.charCodeAt(0)) {
+          setLetter(String.fromCharCode(letterstate.charCodeAt(0) + 1));
+        } else {
+          setLetter(String.fromCharCode(letterstate.charCodeAt(0) - 1));
+        }
       }
     }
+    changeletter();
   }, [letterstate, setLetter, props.destletter]);
-  return <div>{letterstate}</div>;
+  return <div className="txt">{letterstate}</div>;
 }
 
 Letterdiv.propTypes = {
@@ -91,7 +88,7 @@ export function CustomButton(props) {
   }
   return (
     <>
-      <button type="button" onClick={handleClick}>
+      <button type="button" className="btn1" onClick={handleClick}>
         {props.label}
       </button>
     </>

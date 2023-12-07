@@ -10,3 +10,29 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+.txt {
+  font-family: "Silkscreen", sans-serif;
+  font-size: 12rem;
+  text-shadow: 0.3rem 0.5rem rgb(2, 215, 44);
+}
+
+html {
+  background-color: rgb(37, 37, 37);
+}
+
+.inputbox {
+  font-size: 2rem;
+  font-family: "Silkscreen", sans-serif;
+  border-radius: 1rem;
+  padding: 0.3rem;
+  box-shadow: 0.3rem 0.5rem 0.5rem red;
+}
+
+.btn1 {
+  font-size: 2rem;
+  font-family: "Silkscreen", sans-serif;
+  border-radius: 1rem;
+
+  box-shadow: 0.3rem 0.5rem 0.5rem red;
+}

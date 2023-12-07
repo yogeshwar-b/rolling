@@ -30,9 +30,7 @@ export function App() {
 }
 
 function Pageitems(props) {
-  const [sourceText, setSourceText] = useState(
-    props.originalsource.destination
-  );
+  const [sourceText, setSourceText] = useState("");
   return (
     <>
       <Textbox
@@ -67,11 +65,13 @@ function Textbox(props) {
 
   return (
     <>
-      <label htmlFor="txtbox">{props.label}</label>
+      {/* <label htmlFor="txtbox">{props.label}</label> */}
       <input
         type="text"
         id="txtbox"
         value={props.textvalue}
+        className="inputbox"
+        placeholder="Enter the Text to Roll"
         onChange={handleChange}
       />
     </>
